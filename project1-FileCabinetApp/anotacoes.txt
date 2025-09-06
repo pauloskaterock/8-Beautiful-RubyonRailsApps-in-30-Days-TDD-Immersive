@@ -1,0 +1,10 @@
+rails new cabinet
+instalação gems:
+gem install devise --pre
+gem install simple_form --pre
+gem install html --pre
+
+bundle install
+editado o arquivo index.html.erb p> index.html.haml
+
+minuto 3:42
