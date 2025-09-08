@@ -7,4 +7,11 @@ gem install html --pre
 bundle install
 editado o arquivo index.html.erb p> index.html.haml
 
-minuto 3:42
+rails generate model Doc title:string context:text
+
+rails generate controller Docs 
+
+
+rails generate simple_form:install
+
+
