@@ -14,4 +14,15 @@ rails generate controller Docs
 
 rails generate simple_form:install
 
+rails generate devise:install
+
+rails generate devise:install
+rails generate devise:models
+
+
+rails generate devise User
+
+rails db:migrate
+
+
 
