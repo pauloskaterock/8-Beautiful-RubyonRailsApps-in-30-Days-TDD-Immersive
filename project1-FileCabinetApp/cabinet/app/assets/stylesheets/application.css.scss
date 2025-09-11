@@ -8,3 +8,12 @@
  *
  * Consider organizing styles into separate files for maintainability.
  */
+
+
+  /*= require_self
+ */
+
+ @import 'normalize';
+ @import "global.css.scss";
+ @import "welcome.css.scss";
+ @import "docs.css.scss";
