@@ -1,5 +1,5 @@
 
-/*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */
+
 
 /* Document
    ========================================================================== */
@@ -274,7 +274,26 @@ textarea {
   box-sizing: border-box; /* 1 */
   padding: 0; /* 2 */
 }
+/**
+ * Remove outline for non-accessible elements, but keep for keyboard navigation.
+ */
+button:focus,
+input:focus,
+select:focus,
+textarea:focus {
+  outline: 2px solid #005fcc;
+  outline-offset: 2px;
+}
 
+/**
+ * Remove default focus outline for mouse users.
+ */
+button:focus:not(:focus-visible),
+input:focus:not(:focus-visible),
+select:focus:not(:focus-visible),
+textarea:focus:not(:focus-visible) {
+  outline: none;
+}
 /**
  * Correct the cursor style of increment and decrement buttons in Chrome.
  */

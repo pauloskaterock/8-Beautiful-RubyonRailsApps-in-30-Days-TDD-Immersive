@@ -14,6 +14,6 @@
  */
 
  @import 'normalize';
- @import "global.css.scss";
- @import "welcome.css.scss";
- @import "docs.css.scss";
+ @import "global.css";
+ @import "welcome.css";
+ @import "docs.css";

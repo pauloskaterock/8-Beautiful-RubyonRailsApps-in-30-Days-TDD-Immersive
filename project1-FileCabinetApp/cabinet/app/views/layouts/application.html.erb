@@ -1,39 +1,44 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= content_for(:title) || "Cabinet" %></title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="mobile-web-app-capable" content="yes">
+    <title>FileCabinet | Your life's work!</title>
+
+    <!-- Inclui o CSS principal da aplicação -->
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'true' %>
+
+    <!-- Inclui o JavaScript principal da aplicação -->
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'true' %>
+
+    <!-- Tags de segurança para formulários -->
     <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
-
-    <%= yield :head %>
-
-    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
-    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
-
-    <link rel="icon" href="/icon.png" type="image/png">
-    <link rel="icon" href="/icon.svg" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="/icon.png">
-
-    <%# Includes all stylesheet files in app/assets/stylesheets %>
-    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
-    <%= javascript_importmap_tags %>
   </head>
 
   <body>
-    <%# Atalho para identação no VSCode: Shift + Alt + F %>
+    <header>
+      <div class="header_inner">
+        <!-- Link para a página inicial com ID 'logo' -->
+        <%= link_to "FileCabinet", root_path, id: "logo" %>
 
-    <p>Paulinho Rails Engineer</p>
+        <nav>
+          <% if user_signed_in? %>
+            <!-- Link para criar novo documento -->
+            <%= link_to "Create Doc", new_doc_path %>
 
+            <!-- Link para sair da sessão (DELETE) -->
+            <%= link_to "Sign Out", destroy_user_session_path, method: :delete %>
+          <% else %>
+            <!-- Link para login -->
+            <%= link_to "Log In", new_user_session_path %>
+          <% end %>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Mensagens de notificação e alerta -->
     <p class="notice"><%= notice %></p>
     <p class="alert"><%= alert %></p>
 
-
-
-
-
+    <!-- Renderiza o conteúdo da view atual -->
     <%= yield %>
   </body>
 </html>

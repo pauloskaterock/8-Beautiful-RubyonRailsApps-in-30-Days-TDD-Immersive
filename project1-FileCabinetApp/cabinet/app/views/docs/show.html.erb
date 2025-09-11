@@ -1,14 +1,11 @@
-<h1><%= @doc.title %></h1>
+<div class="wrapper_with_padding">
+  <div id="doc_show">
+    <h1 class="title"><%= @doc.title %></h1>
+    <p><%= simple_format(@doc.context) %></p>
 
-<p><%=  %></p>
-
-<!-- Link para a listagem de todos os documentos -->
-<%= link_to "All Docs", docs_path %>
-
-<!-- Link para editar o documento atual (@doc) -->
-<%= link_to "Fix Doc", edit_doc_path(@doc) %>
-
-<!-- Link para excluir o documento atual (@doc)
-     - method: :delete → envia uma requisição DELETE
-     - data: { confirm: "Are you sure:" } → exibe um alerta de confirmação antes de excluir -->
-<%= link_to "Trash It", doc_path(@doc), method: :delete, data: { confirm: "Are you sure:" } %>
+    <div class="buttons">
+      <%= link_to "Fix Docs", edit_doc_path(@doc), class: "button" %>
+      <%= link_to "Trash It", doc_path(@doc), method: :delete, data: { confirm: "Are you sure?" }, class: "button" %>
+    </div>
+  </div>
+</div>

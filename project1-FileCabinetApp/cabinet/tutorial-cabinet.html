@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Guia Interativo do Projeto Cabinet</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      display: flex;
+      background-color: #f4f4f4;
+    }
+    nav {
+      width: 250px;
+      background-color: #2B2E2E;
+      color: white;
+      padding: 2rem;
+      height: 100vh;
+      position: sticky;
+      top: 0;
+    }
+    nav h2 {
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+    }
+    nav a {
+      display: block;
+      color: #C0C1C1;
+      text-decoration: none;
+      margin-bottom: 0.8rem;
+    }
+    nav a:hover {
+      color: #529ECC;
+    }
+    main {
+      padding: 2rem;
+      flex: 1;
+      overflow-y: auto;
+    }
+    section {
+      margin-bottom: 3rem;
+    }
+    h1, h2 {
+      color: #2B2E2E;
+    }
+    pre {
+      background-color: #eee;
+      padding: 1rem;
+      border-radius: 6px;
+      overflow-x: auto;
+    }
+    ul {
+      padding-left: 1.2rem;
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <h2>📘 Navegação</h2>
+    <a href="#inicio">1. Criação do Projeto</a>
+    <a href="#gems">2. Instalação de Gems</a>
+    <a href="#devise">3. Configuração do Devise</a>
+    <a href="#modelo-doc">4. Modelo Doc</a>
+    <a href="#associacao">5. Associação com Usuário</a>
+    <a href="#controller">6. Controller Docs</a>
+    <a href="#views">7. Views Personalizadas</a>
+    <a href="#rotas">8. Rotas</a>
+    <a href="#layout">9. Layout e Estilização</a>
+    <a href="#docker">10. Docker e Deploy</a>
+    <a href="#config">11. Outras Configurações</a>
+    <a href="#evolucao">12. Como Evoluir o Projeto</a>
+    <a href="#conclusao">✅ Conclusão</a>
+  </nav>
+
+  <main>
+    <section id="inicio">
+      <h2>1. Criação do Projeto</h2>
+      <pre><code>rails new cabinet</code></pre>
+      <p>Inicia um novo projeto Rails 8 com suporte a Propshaft, Importmap, Turbo e Stimulus.</p>
+    </section>
+
+    <section id="gems">
+      <h2>2. Instalação de Gems</h2>
+      <pre><code>
+gem install devise --pre
+gem install simple_form --pre
+gem install haml --pre
+bundle install
+      </code></pre>
+      <p>Essas gems adicionam autenticação, formulários simplificados e suporte à sintaxe HAML.</p>
+    </section>
+
+    <section id="devise">
+      <h2>3. Configuração do Devise</h2>
+      <pre><code>
+rails generate devise:install
+rails generate devise User
+rails db:migrate
+rails generate devise:views
+      </code></pre>
+      <p>Devise gerencia autenticação de usuários e fornece views prontas para login, cadastro e recuperação de senha.</p>
+    </section>
+
+    <section id="modelo-doc">
+      <h2>4. Criação do Modelo Doc</h2>
+      <pre><code>rails generate model Doc title:string context:text</code></pre>
+      <p>O modelo <code>Doc</code> representa os documentos criados pelos usuários.</p>
+    </section>
+
+    <section id="associacao">
+      <h2>5. Associação com Usuário</h2>
+      <pre><code>
+rails generate migration add_user_id_to_docs user_id:integer
+rails db:migrate
+      </code></pre>
+      <p>Adiciona a relação <code>belongs_to :user</code> no modelo <code>Doc</code> e <code>has_many :docs</code> no modelo <code>User</code>.</p>
+    </section>
+
+    <section id="controller">
+      <h2>6. Criação do Controller Docs</h2>
+      <pre><code>rails generate controller Docs</code></pre>
+      <p>Implemente o CRUD completo em <code>docs_controller.rb</code>, protegendo com <code>before_action :authenticate_user!</code>.</p>
+    </section>
+
+    <section id="views">
+      <h2>7. Views Personalizadas</h2>
+      <p>Utilize <code>simple_form_for</code> nos formulários e crie views para <code>index</code>, <code>show</code>, <code>new</code>, <code>edit</code> e <code>_form</code>.</p>
+      <pre><code>
+<%= simple_form_for @doc do |f| %>
+  <%= f.input :title %>
+  <%= f.input :context, as: :text %>
+  <%= f.button :submit %>
+<% end %>
+      </code></pre>
+    </section>
+
+    <section id="rotas">
+      <h2>8. Rotas</h2>
+      <pre><code>
+devise_for :users
+resources :docs
+
+authenticated :user do
+  root "docs#index", as: :authenticated_root
+end
+
+unauthenticated do
+  root "welcome#index", as: :unauthenticated_root
+end
+      </code></pre>
+    </section>
+
+    <section id="layout">
+      <h2>9. Layout e Estilização</h2>
+      <p>Use arquivos CSS como <code>global.css</code>, <code>welcome.css</code> e <code>docs.css</code>. Propshaft exige que sejam <strong>CSS puro</strong>.</p>
+    </section>
+
+    <section id="docker">
+      <h2>10. Docker e Deploy com Kamal</h2>
+      <p>Configure <code>Dockerfile</code>, <code>bin/docker-entrypoint</code> e <code>bin/setup</code>. Use Kamal para deploy com containers.</p>
+    </section>
+
+    <section id="config">
+      <h2>11. Outras Configurações</h2>
+      <ul>
+        <li><code>config/importmap.rb</code> para dependências JS</li>
+        <li><code>config/environments/development.rb</code> para ajustes locais</li>
+        <li><code>annotacoes.txt</code> para histórico de comandos</li>
+      </ul>
+    </section>
+
+    <section id="evolucao">
+      <h2>12. Como Evoluir o Projeto</h2>
+      <ul>
+        <li><strong>Tailwind CSS</strong>: estilização moderna e responsiva</li>
+        <li><strong>React</strong>: interatividade avançada com componentes</li>
+        <li><strong>Hotwire</strong>: navegação instantânea com Turbo Frames</li>
+        <li><strong>Active Storage</strong>: upload de arquivos</li>
+        <li><strong>RSpec + FactoryBot</strong>: testes automatizados</li>
+        <li><strong>Pundit</strong>: autorização por política</li>
+        <li><strong>i18n</strong>: suporte a múltiplos idiomas</li>
+        <li><strong>ActiveAdmin</strong>: painel administrativo</li>
+      </ul>
+    </section>
+
+    <section id="conclusao">
+      <h2>✅ Conclusão</h2>
+      <p>O projeto <strong>Cabinet</strong> é uma base sólida para qualquer aplicação Rails moderna. Com autenticação, CRUD, layout personalizado e deploy pronto, ele está preparado para crescer com tecnologias como Tailwind, React e Hotwire.</p>
+    </section>
+  </main>
+
+</body>
+</html>

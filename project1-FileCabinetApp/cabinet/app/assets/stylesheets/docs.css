@@ -1,0 +1,80 @@
+/* DOCS INDEX */
+
+#docs .doc {
+  background: #78594B;
+  width: 90%;
+  min-height: 100px;
+  margin: 1rem 1%;
+  padding: 1.5rem 2.5%;
+  float: left;
+  border-radius: 2.9rem;
+  position: relative;
+  text-align: center;
+}
+
+#docs .doc .title {
+  font-family: 'Dosis', sans-serif;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: white;
+  margin: 0;
+  left: 4.5%;
+  font-size: 2em;
+  letter-spacing: 1px;
+}
+
+#docs .doc .date {
+  position: absolute;
+  bottom: 0.25rem;
+  left: 5.5%;
+  color: white;
+  font-weight: lighter;
+  font-size: 0.75rem;
+  text-align: center;
+}
+
+#docs .doc .content {
+  position: absolute;
+  bottom: 0.25rem;
+  left: 27.5%;
+  color: #C0C1C1; /* substituto para $light_gray */
+  font-weight: bold;
+  font-size: 0.75rem;
+  text-align: left;
+}
+
+/* DOCS SHOW */
+
+#doc_show .title {
+  font-family: 'Dosis', sans-serif;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: #78594B;
+  font-size: 2rem;
+  margin-bottom: 1.25rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(82, 158, 204, 0.2);
+  text-align: center;
+}
+
+#doc_show p {
+  font-size: 1rem;
+  line-height: 1.75;
+}
+
+#doc_show .buttons {
+  margin-top: 3rem;
+  text-align: center;
+}
+
+#doc_show .buttons a.button {
+  padding: 0.2rem 1.5rem;
+  border-radius: 0.1rem;
+  text-decoration: none;
+  color: #529ECC;
+  border: 5px solid #529ECC;
+  font-family: 'Dosis', sans-serif;
+  font-weight: bold;
+  text-transform: uppercase;
+  background: transparent;
+}
