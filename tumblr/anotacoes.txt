@@ -1,0 +1,9 @@
+rails new tumblr
+
+Tumblr - Create Post Model, Controller
+
+rails generate controller posts
+
+rails generate model Post title:string body:text
+
+rails db:migrate
