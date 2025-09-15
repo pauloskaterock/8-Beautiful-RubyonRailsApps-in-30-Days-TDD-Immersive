@@ -6,6 +6,17 @@
 <%= form_for :post, url: posts_path do |f| %>
 
 
+<% if @post.erros.any? %>
+
+ <div id="erros">
+ <h2><%= pluralize(@post.erros.count, "erros") %> stopped this post from saving</h2>
+   <% @post.erros.full_message.each do |msg| %>
+   <li><%= msg %></li>
+   <% end % >
+ </div>
+
+<% end %>
+
     <p>
         <%= f.label :title %><br>
         <%= f.text_field :title %>
