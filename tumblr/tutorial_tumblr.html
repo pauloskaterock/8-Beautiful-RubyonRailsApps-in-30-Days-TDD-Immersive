@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Guia Interativo: Projeto Tumblr com Ruby on Rails</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: 'Raleway', sans-serif;
+        background-color: #f9f9f9;
+        display: flex;
+      }
+      nav {
+        width: 250px;
+        background-color: #2b2e2e;
+        color: white;
+        padding: 2rem;
+        height: 100vh;
+        position: sticky;
+        top: 0;
+        overflow-y: auto;
+      }
+      nav h2 {
+        font-size: 1.2rem;
+        margin-bottom: 1rem;
+      }
+      nav a {
+        display: block;
+        color: #c0c1c1;
+        text-decoration: none;
+        margin-bottom: 0.8rem;
+      }
+      nav a:hover {
+        color: #529ecc;
+      }
+      main {
+        padding: 2rem;
+        flex: 1;
+        overflow-y: auto;
+      }
+      section {
+        margin-bottom: 3rem;
+      }
+      h1,
+      h2 {
+        color: #2b2e2e;
+      }
+      pre {
+        background-color: #eee;
+        padding: 1rem;
+        border-radius: 6px;
+        overflow-x: auto;
+      }
+      code {
+        font-family: monospace;
+      }
+      ul {
+        padding-left: 1.2rem;
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <h2>📘 Navegação</h2>
+      <a href="#inicio">1. Criação do Projeto</a>
+      <a href="#posts">2. Posts: Model, Controller e Views</a>
+      <a href="#validacoes">3. Validações e Erros</a>
+      <a href="#comentarios">4. Comentários</a>
+      <a href="#layout">5. Layout e Navegação</a>
+      <a href="#usuarios">6. Autenticação com Devise</a>
+      <a href="#paginas">7. Páginas Estáticas</a>
+      <a href="#evolucao">8. Como Evoluir o Projeto</a>
+      <a href="#conclusao">✅ Conclusão</a>
+    </nav>
+
+    <main>
+      <section id="inicio">
+        <h2>1. Criação do Projeto</h2>
+        <pre><code>rails new tumblr</code></pre>
+        <p>
+          Esse comando inicia um novo projeto Rails com estrutura básica para o clone do Tumblr.
+        </p>
+      </section>
+
+      <section id="posts">
+        <h2>2. Posts: Model, Controller e Views</h2>
+        <pre><code>
+rails generate controller Posts
+rails generate model Post title:string body:text
+rails db:migrate
+      </code></pre>
+        <p>
+          O modelo <code>Post</code> representa cada publicação. O controller gerencia as ações de
+          CRUD.
+        </p>
+        <p>Exemplo de criação:</p>
+        <pre><code>
+@post = Post.new(post_params)
+if @post.save
+  redirect_to @post
+else
+  render 'new'
+end
+
+private
+def post_params
+  params.require(:post).permit(:title, :body)
+end
+      </code></pre>
+        <p>Exibição de posts:</p>
+        <pre><code>
+<% @posts.each do |post| %>
+  &lt;div class="post_wrapper"&gt;
+    &lt;h2&gt;&lt;%= link_to post.title, post %&gt;&lt;/h2&gt;
+    &lt;p&gt;&lt;%= time_ago_in_words(post.created_at) %&gt; ago&lt;/p&gt;
+    &lt;p&gt;&lt;%= truncate(post.body, length: 100) %&gt;&lt;/p&gt;
+  &lt;/div&gt;
+<% end %>
+      </code></pre>
+      </section>
+
+      <section id="validacoes">
+        <h2>3. Validações e Erros</h2>
+        <pre><code>
+validates :title, presence: true, length: { minimum: 5 }
+validates :body, presence: true
+      </code></pre>
+        <p>Exibição de erros:</p>
+        <pre><code>
+<% if @post.errors.any? %>
+  &lt;div id="errors"&gt;
+    &lt;h2&gt;&lt;%= pluralize(@post.errors.count, "erro") %&gt; impediram o salvamento&lt;/h2&gt;
+    &lt;ul&gt;
+      <% @post.errors.full_messages.each do |msg| %>
+        &lt;li&gt;&lt;%= msg %&gt;&lt;/li&gt;
+      <% end %>
+    &lt;/ul&gt;
+  &lt;/div&gt;
+<% end %>
+      </code></pre>
+      </section>
+
+      <section id="comentarios">
+        <h2>4. Comentários</h2>
+        <pre><code>
+rails generate model Comment name:string body:text post:references
+rails generate controller Comments
+rails db:migrate
+      </code></pre>
+        <p>Associação:</p>
+        <pre><code>
+class Post &lt; ApplicationRecord
+  has_many :comments
+end
+      </code></pre>
+        <p>Criação de comentário:</p>
+        <pre><code>
+def create
+  @post = Post.find(params[:post_id])
+  @comment = @post.comments.create(params[:comment].permit(:name, :body))
+  redirect_to post_path(@post)
+end
+      </code></pre>
+        <p>Formulário:</p>
+        <pre><code>
+<%= form_for([@post, @post.comments.build]) do |f| %>
+  &lt;p&gt;&lt;%= f.label :name %&gt;&lt;br&gt;&lt;%= f.text_field :name %&gt;&lt;/p&gt;
+  &lt;p&gt;&lt;%= f.label :body %&gt;&lt;br&gt;&lt;%= f.text_area :body %&gt;&lt;/p&gt;
+  &lt;p&gt;&lt;%= f.submit %&gt;&lt;/p&gt;
+<% end %>
+      </code></pre>
+      </section>
+
+      <section id="layout">
+        <h2>5. Layout e Navegação</h2>
+        <p>Arquivo <code>application.html.erb</code> com sidebar, header e botões:</p>
+        <pre><code>
+&lt;div id="sidebar"&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;%= link_to "Tumblr", root_path %&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;%= link_to "Posts", root_path %&gt;&lt;/li&gt;
+    &lt;li&gt;About&lt;/li&gt;
+  &lt;/ul&gt;
+  &lt;p&gt;User Login&lt;/p&gt;
+&lt;/div&gt;
+      </code></pre>
+      </section>
+
+      <section id="usuarios">
+        <h2>6. Autenticação com Devise</h2>
+        <pre><code>
+rails generate devise:install
+rails generate devise User
+rails generate devise:views
+rails db:migrate
+      </code></pre>
+        <p>Proteja rotas com:</p>
+        <pre><code>before_action :authenticate_user!, except: [:index, :show]</code></pre>
+        <p>Exiba botões condicionais:</p>
+        <pre><code>
+<% if user_signed_in? %>
+  &lt;%= link_to "Delete", post_path(@post), method: :delete, data: { confirm: "Are you sure?" } %&gt;
+<% end %>
+      </code></pre>
+      </section>
+
+      <section id="paginas">
+        <h2>7. Páginas Estáticas</h2>
+        <pre><code>
+rails generate controller Pages
+get '/about', to: 'pages#about'
+      </code></pre>
+        <p>Exemplo de página:</p>
+        <pre><code>
+&lt;div id="page_wrapper"&gt;
+  &lt;div id="profile_image"&gt;&lt;%= image_tag "profile.jpeg" %&gt;&lt;/div&gt;
+  &lt;div id="content"&gt;
+    &lt;h1&gt;It's Mr Mustache&lt;/h1&gt;
+    &lt;p&gt;Sobre o projeto...&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+      </code></pre>
+      </section>
+
+      <section id="evolucao">
+        <h2>8. Como Evoluir o Projeto</h2>
+        <ul>
+          <li><strong>Tailwind CSS</strong>: estilização moderna</li>
+        </ul>
+      </section>
+    </main>
+  </body>
+</html>
